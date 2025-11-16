@@ -10,21 +10,45 @@ def UI(ventana):
     )
     caja_comidas.place(
     
-        x= 50,
-        y= 220
+        x= 130,
+        y= 40
     )
     caja_cantidades = tkinter.Entry(
         ventana,
-        width= 10,
-        font= ("Garamond", 20),
+        width=12,
+        font=("Segoe UI", 16)
     )
     caja_cantidades.place(
     
-        x= 50,
-        y= 300
+        x=130, 
+        y=108
     )
     
-    
+    #LABELS
+    comida_label = tkinter.Label(
+        ventana,
+        font= ("Segoe ui", 14),
+        foreground= "white",
+        background= "#2d3f4d",
+        text= "Comida:"
+        
+    )
+    comida_label.place(
+        x = 40,
+        y = 42
+    )
+    cantidad_label = tkinter.Label(
+        ventana,
+        text="Cantidad:",
+        font=("Segoe UI", 14),
+        foreground="white",
+        background="#2d3f4d"
+    ) 
+    cantidad_label.place(
+        x=40, 
+        y=110
+        
+    )
     texto_error = tkinter.Label(
         ventana,
         text= "",
@@ -40,16 +64,15 @@ def UI(ventana):
     )
     texto_calorias = tkinter.Label(
         ventana,
-        text= "Calorias:",
-        font= ("Garamond", 15),
-        foreground = "red",
-        background= "white"
+        text="Calorías:",
+        font=("Segoe UI", 14),
+        foreground="white",
+        background="#2d3f4d"
         
     )
     texto_calorias.place(
         
-        x= 50,
-        y= 130
+        x=40, y=170
         
     )
     texto_calorias_resultado = tkinter.Label(
@@ -62,11 +85,11 @@ def UI(ventana):
     )
     texto_calorias_resultado.place(
         
-        x= 140,
-        y= 130
+        x=130, 
+        y=168
         
     )
-    
+    #BOTONES
     boton_enter = tkinter.Button(
         ventana,
         background= "White",
@@ -78,6 +101,7 @@ def UI(ventana):
 
     boton_enter.place(
     
-        x= 80,
-        y= 400
+        x= 100,
+        y= 330
     )
+    

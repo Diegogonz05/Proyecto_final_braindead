@@ -10,7 +10,7 @@ ventana = tkinter.Tk()
 # El tamaño de la ventana (px)
 ventana.geometry("300x600")
 
-ventana.configure(background= "green")
+ventana.configure(background= "#565758")
 tkinter.Wm.title(ventana, "Programa para contar calorias")
 
 
