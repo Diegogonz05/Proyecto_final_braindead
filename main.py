@@ -12,7 +12,7 @@ ventana = tkinter.Tk()
 ventana.geometry("300x600")
 
 ventana.configure(background= "#565758")
-tkinter.Wm.title(ventana, "Programa para contar calorias")
+tkinter.Wm.title(ventana, "NutriSense")
 
 
 UI(ventana)
