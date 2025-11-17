@@ -1,4 +1,5 @@
 from logica import registrar_comidas
+from tkinter import ttk
 
 def UI(ventana):
     import tkinter
@@ -13,7 +14,7 @@ def UI(ventana):
         x= 130,
         y= 40
     )
-    caja_cantidades = tkinter.Entry(
+    '''caja_cantidades = tkinter.Entry(
         ventana,
         width=12,
         font=("Segoe UI", 16)
@@ -23,7 +24,7 @@ def UI(ventana):
         x=130, 
         y=108
     )
-    
+    '''
     #LABELS
     comida_label = tkinter.Label(
         ventana,
@@ -47,7 +48,20 @@ def UI(ventana):
     cantidad_label.place(
         x=40, 
         y=110
+    
         
+    )
+    cantidad_gramos = tkinter.Label(
+        ventana,
+        text="(en gramos)",
+        font=("Segoe UI", 8 ),
+        foreground="white",
+        background="#2d3f4d"
+    )
+    cantidad_gramos.place(
+        
+        x=40, 
+        y=141.5
     )
     texto_error = tkinter.Label(
         ventana,
@@ -80,13 +94,13 @@ def UI(ventana):
         ventana,
         text= "",
         font= ("Garamond", 15),
-        foreground = "red",
+        foreground = "black",
         background= "white"
     )
     texto_calorias_resultado.place(
         
         x=130, 
-        y=168
+        y=172
         
     )
     #BOTONES
@@ -95,13 +109,26 @@ def UI(ventana):
         background= "White",
         font= ("Garamond", 14),
         text= "Aceptar",
-        command= lambda: registrar_comidas(caja_comidas, caja_cantidades, texto_error, texto_calorias_resultado)
+        command= lambda: registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropdown_menu)
     
         )
 
     boton_enter.place(
     
-        x= 100,
-        y= 330
+        x= 120,
+        y= 220
+    )
+    #Boton_menu
+    dropdown_menu = ttk.Combobox(
+        ventana,
+        values= ("50", "100", "150"),
+        width=12,
+        font=("Segoe UI", 16)
+
+    )
+    dropdown_menu.place(
+        x=130, 
+        y=108
+    
     )
     

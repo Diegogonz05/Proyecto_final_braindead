@@ -185,7 +185,7 @@ calorias_por_comida =  [
     {"alimento": "fajitas de pollo", "calorias_100g": 150},
     {"alimento": "fajitas de res", "calorias_100g": 180},
     {"alimento": "empanada argentina", "calorias_100g": 260},
-    {"alimento": "choripán", "calorias_100g": 280},
+    {"alimento": "choripan", "calorias_100g": 280},
     {"alimento": "chimichurri (salsa)", "calorias_100g": 180},
     {"alimento": "pancakes", "calorias_100g": 227},
     {"alimento": "waffles", "calorias_100g": 291},
@@ -207,33 +207,101 @@ calorias_por_comida =  [
     {"alimento": "queso crema", "calorias_100g": 350},
     {"alimento": "crema batida", "calorias_100g": 257},
     {"alimento": "malt shake", "calorias_100g": 140},
-    {"alimento": "granizado con sirope", "calorias_100g": 90}
-]
+    {"alimento": "granizado con sirope", "calorias_100g": 90},
+    {"alimento": "pupusa de arroz", "calorias_100g": 240},
+    {"alimento": "pupusa de queso y chicharrón", "calorias_100g": 280},
+    {"alimento": "pupusa de ayote", "calorias_100g": 210},
+    {"alimento": "pupusa de mora", "calorias_100g": 200},
+    {"alimento": "pan con chumpe", "calorias_100g": 225},
+    {"alimento": "pan con gallina india", "calorias_100g": 215},
+    {"alimento": "chilate", "calorias_100g": 50},
+    {"alimento": "nuégados", "calorias_100g": 290},
+    {"alimento": "turrón", "calorias_100g": 310},
+    {"alimento": "canelas", "calorias_100g": 330},
+    {"alimento": "tostadas con huevo", "calorias_100g": 220},
+    {"alimento": "pastelitos de papa", "calorias_100g": 190},
+    {"alimento": "quesadilla de arroz", "calorias_100g": 400},
+    {"alimento": "empanadas de plátano", "calorias_100g": 220},
+    {"alimento": "pollo empanizado", "calorias_100g": 240},
+    {"alimento": "carne en salsa", "calorias_100g": 210},
+    {"alimento": "gallo en chicha", "calorias_100g": 200},
+    {"alimento": "mariscada", "calorias_100g": 120},
+    {"alimento": "cocido salvadoreño", "calorias_100g": 140},
 
-def registrar_comidas(caja_comidas, caja_cantidades, texto_error, texto_calorias_resultado):
+    # Comidas genéricas más comunes
+    {"alimento": "carne de res", "calorias_100g": 250},
+    {"alimento": "carne de cerdo", "calorias_100g": 290},
+    {"alimento": "carne de pollo", "calorias_100g": 165},
+    {"alimento": "carne frita", "calorias_100g": 280},
+    {"alimento": "carne al vapor", "calorias_100g": 180},
+    {"alimento": "filete de pescado", "calorias_100g": 120},
+    {"alimento": "pescado hervido", "calorias_100g": 110},
+    {"alimento": "pescado a la plancha", "calorias_100g": 125},
+    {"alimento": "pescado al vapor", "calorias_100g": 100},
+    {"alimento": "huevo duro", "calorias_100g": 155},
+    {"alimento": "huevo cocido", "calorias_100g": 150},
+    {"alimento": "huevo frito", "calorias_100g": 196},
+    {"alimento": "arroz con verduras", "calorias_100g": 130},
+    {"alimento": "arroz frito simple", "calorias_100g": 170},
+    {"alimento": "arroz integral", "calorias_100g": 111},
+    {"alimento": "ensalada verde", "calorias_100g": 45},
+    {"alimento": "vegetales cocidos", "calorias_100g": 55},
+    {"alimento": "verduras al vapor", "calorias_100g": 40},
+    {"alimento": "sopa de pollo", "calorias_100g": 80},
+    {"alimento": "sopa de verduras casera", "calorias_100g": 60},
+    {"alimento": "guisado de verduras", "calorias_100g": 70},
+    {"alimento": "fruta mixta", "calorias_100g": 60},
+    {"alimento": "ensalada de frutas", "calorias_100g": 70},
+    {"alimento": "pollo desmenuzado", "calorias_100g": 150},
+    {"alimento": "pollo en caldo", "calorias_100g": 120},
+    {"alimento": "frijoles parados", "calorias_100g": 130},
+    {"alimento": "frijoles con crema", "calorias_100g": 175}
+    
+]
+#Funcion conectada al boton ENTER, todo lo que ejecuta cuando se da click el boton
+def registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropdown_menu):
     
     global calorias_totales
+    
     comida = caja_comidas.get().lower()
-    cantidades = int(caja_cantidades.get())
+    cantidades = dropdown_menu.get()
     
     if comida == "" or cantidades == "":
         texto_error.config(text= "Llena todos los campos")
         return
     
-    comidas_registradas.append(comida)
-    comidas_registradas.append(cantidades)
+    if cantidades.isdigit():
+        texto_error.config(text= "")
+    else:
+        texto_error.config(text= "Digite un numero")
+        return
+    #Se hace int aqui para compararlo con numeros enteros (hasta aca para
+    #evitar error al no recibir input)
+    cantidades = int(cantidades)
+    
+    #El bucle que ve cada diccionario dentro de la lista y corrobora si la comida
+    #pertenece a algun alimento de cada diccionario
+    existe_la_comida = False
     for diccionario in calorias_por_comida:
         if comida == diccionario["alimento"]:
+            texto_error.config(text= "")
+            existe_la_comida = True
             if cantidades == 100:
                 calorias_totales += diccionario["calorias_100g"]
             if cantidades == 50:
                 calorias_totales += round((diccionario["calorias_100g"]/ 100) * 50, 2)
             if cantidades == 150:
                 calorias_totales += round((diccionario["calorias_100g"]/100) * 150, 2)
-                            
+    if existe_la_comida == False:
+        texto_error.config(text= "No existe esa comida")
+        return
+    
+    comidas_registradas.append(comida)
+    comidas_registradas.append(cantidades)
+                          
     
     print(comidas_registradas)
     texto_calorias_resultado.config(text= str(calorias_totales))
     
     caja_comidas.delete(0,"end")
-    caja_cantidades.delete(0,"end")
+    dropdown_menu.delete(0,"end")
