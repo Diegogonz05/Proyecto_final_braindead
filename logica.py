@@ -267,13 +267,13 @@ def registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropd
     cantidades = dropdown_menu.get()
     
     if comida == "" or cantidades == "":
-        texto_error.config(text= "Llena todos los campos")
+        texto_error.config(text= "Llena todos los campos", foreground = "red")
         return
     
     if cantidades.isdigit():
         texto_error.config(text= "")
     else:
-        texto_error.config(text= "Digite un numero")
+        texto_error.config(text= "Digite un numero", foreground = "red")
         return
     #Se hace int aqui para compararlo con numeros enteros (hasta aca para
     #evitar error al no recibir input)
@@ -288,20 +288,36 @@ def registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropd
             existe_la_comida = True
             if cantidades == 100:
                 calorias_totales += diccionario["calorias_100g"]
-            if cantidades == 50:
+            elif cantidades == 50:
                 calorias_totales += round((diccionario["calorias_100g"]/ 100) * 50, 2)
-            if cantidades == 150:
+            elif cantidades == 150:
                 calorias_totales += round((diccionario["calorias_100g"]/100) * 150, 2)
+            else:
+                texto_error.config(text= "Digite una cantidad (gramos) válida (50, 100, 150)", foreground = "red")
+                return
     if existe_la_comida == False:
-        texto_error.config(text= "No existe esa comida")
+        texto_error.config(text= "No existe esa comida", foreground = "red")
         return
     
     comidas_registradas.append(comida)
     comidas_registradas.append(cantidades)
-                          
+    texto_error.config(text= "Comida registrada!", foreground= "green")
     
     print(comidas_registradas)
     texto_calorias_resultado.config(text= str(calorias_totales))
     
     caja_comidas.delete(0,"end")
     dropdown_menu.delete(0,"end")
+
+calorias_excedidas = 0
+def calcular_exceder(texto_calorias_aldia):
+    global calorias_excedidas
+    if calorias_totales == 2000:
+        calorias_excedidas = calorias_totales - 2000
+    elif calorias_totales > 2000:
+        calorias_excedidas = calorias_totales - 2000
+    elif calorias_totales < 2000:
+        calorias_excedidas = calorias_totales - 2000
+    texto_calorias_aldia.config(text= f"Te excediste/faltan {calorias_excedidas} calorias de 2000")
+        
+        

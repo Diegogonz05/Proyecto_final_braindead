@@ -1,4 +1,4 @@
-from logica import registrar_comidas
+from logica import registrar_comidas, calcular_exceder
 from tkinter import ttk
 
 def UI(ventana):
@@ -103,6 +103,19 @@ def UI(ventana):
         y=172
         
     )
+    texto_calorias_aldia = tkinter.Label(
+        ventana,
+        text= "",
+        font= ("Garamond", 10 ),
+        foreground = "black",
+        background= "white"
+    )
+    texto_calorias_aldia.place(
+        
+        x=60, 
+        y=390
+    )
+    
     #BOTONES
     boton_enter = tkinter.Button(
         ventana,
@@ -117,6 +130,19 @@ def UI(ventana):
     
         x= 120,
         y= 220
+    )
+    #Boton que calcula si se pasó o no de las calorias del dia
+    boton_exceder = tkinter.Button(
+        ventana,
+        background= "White",
+        font= ("Garamond", 14),
+        text= "Calcular exceder",
+        command= lambda: calcular_exceder(texto_calorias_aldia)
+    )
+    boton_exceder.place(
+        
+        x= 120,
+        y= 330
     )
     #Boton_menu
     dropdown_menu = ttk.Combobox(
