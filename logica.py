@@ -296,12 +296,14 @@ def registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropd
                 texto_error.config(text= "Digite una cantidad (gramos) válida (50, 100, 150)", foreground = "red")
                 return
     if existe_la_comida == False:
-        texto_error.config(text= "No existe esa comida", foreground = "red")
+        texto_error.config(text= f"La comida: {comida} no esta registrada", foreground = "red")
+        caja_comidas.delete(0,"end")
+        dropdown_menu.delete(0,"end")
         return
     
     comidas_registradas.append(comida)
     comidas_registradas.append(cantidades)
-    texto_error.config(text= "Comida registrada!", foreground= "green")
+    texto_error.config(text= f"Comida: {comida} registrada!", foreground= "green")
     
     print(comidas_registradas)
     texto_calorias_resultado.config(text= str(calorias_totales))
