@@ -314,12 +314,11 @@ def registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropd
 calorias_excedidas = 0
 def calcular_exceder(texto_calorias_aldia):
     global calorias_excedidas
-    if calorias_totales == 2000:
-        calorias_excedidas = calorias_totales - 2000
-    elif calorias_totales > 2000:
-        calorias_excedidas = calorias_totales - 2000
-    elif calorias_totales < 2000:
-        calorias_excedidas = calorias_totales - 2000
-    texto_calorias_aldia.config(text= f"Te excediste/faltan {calorias_excedidas} calorias de 2000")
-        
-        
+    calorias_meta = (2000)
+    calorias_excedidas = calorias_totales - calorias_meta
+    if calorias_totales > calorias_meta:
+        texto_calorias_aldia.config(text= f"Te excediste por: {calorias_excedidas} calorias de (2000)", foreground="red")
+    elif calorias_totales < calorias_meta:
+        texto_calorias_aldia.config(text= f"Te faltan {abs(calorias_excedidas)} calorias de (2000)", foreground="blue")
+    else:
+        texto_calorias_aldia.config(text= f"Perfecto! Llegaste a las {calorias_meta} calorias de (2000)", foreground="green")
