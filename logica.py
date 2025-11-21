@@ -1,6 +1,5 @@
 #logica.py
 
-comidas_registradas = []
 calorias_totales = 0
 
 
@@ -254,25 +253,25 @@ calorias_por_comida =  [
     {"alimento": "yogur con fruta", "calorias_100g": 95},
     {"alimento": "yogur natural", "calorias_100g": 59},
     {"alimento": "zanahoria", "calorias_100g": 41}
-]
+] # Alimentos disponibles
 
 
 #Funcion conectada al boton ENTER, todo lo que ejecuta cuando se da click el boton
 def obtener_nombres_comidas():
     nombres_alimentos = []
     for c in calorias_por_comida:
-        nombres_alimentos.append(c["alimento"])
-    return nombres_alimentos
+        nombres_alimentos.append(c["alimento"]) #Busca en cada alimento del diccionario
+    return nombres_alimentos # Y devuelve ese alimento
 
 def registrar_comidas(combo_alimentos, texto_error, texto_calorias_resultado, entrada_gramos, historial):
-    global calorias_totales
+    global calorias_totales #Funciona para integrar una variable que existe fuera de la funcion definida
     
-    alimento = combo_alimentos.get().strip().lower() #Lista despegable
-    cantidades = entrada_gramos.get().strip()
+    alimento = combo_alimentos.get().strip().lower() # Lista despegable (Nuestra seleccion)
+    cantidades = entrada_gramos.get().strip() # Lo que ingresamos en el apartado de gramos
     
 
     if alimento == "" or cantidades == "":
-        texto_error.config(text= "Llena todos los campos", foreground = "red")
+        texto_error.config(text= "Llena todos los campos", foreground = "red") # Deben llenar ambos campos
         return
     
 
@@ -280,7 +279,7 @@ def registrar_comidas(combo_alimentos, texto_error, texto_calorias_resultado, en
         gramos = int(cantidades)
         texto_error.config(text="")
     else:
-        texto_error.config(text= "Digite un numero valido para gramos", foreground = "red")
+        texto_error.config(text= "Digite un numero valido para gramos (Sin decimales)", foreground = "red")
         return
     
     
@@ -289,42 +288,31 @@ def registrar_comidas(combo_alimentos, texto_error, texto_calorias_resultado, en
     for diccionario in calorias_por_comida:
         if alimento == diccionario["alimento"]:
             calorias_a_sumar = round((diccionario["calorias_100g"] * gramos)/100 , 2)
-            calorias_totales += calorias_a_sumar
+            calorias_totales += calorias_a_sumar # Si el alimento esta en el diccionario, se hara el calculo con sus calorias y se sumara al total de calorias
+            calorias_totales = round(calorias_totales , 2)
 
 
 
-
-            
-
-
-            comidas_registradas.append({
-                "alimento": alimento,
-                "gramos": gramos,
-                "calorias": calorias_a_sumar
-            }) #Para historial de pedidos
-
-
-
-            historial.insert("end", f"{alimento.capitalize()} - {gramos} g - {calorias_a_sumar} kcal")
+            historial.insert("end", f"{alimento.capitalize()} - {gramos} g - {calorias_a_sumar} kcal") # "end" coloca el texto en la ultima posicion
             
             texto_calorias_resultado.config(text=calorias_totales)
-            texto_error.config(text=f"{alimento} registrado :D", foreground="green")
+            texto_error.config(text=f"Alimento '{alimento.capitalize()}' registrado :D", foreground="green") # Mensaje de alimento registrado
 
             
             if calorias_totales > 2000:
-                texto_error.config(text= "HAS SUPERO LAS 2000 kcal !!!", foreground="red")
+                texto_error.config(text= "Has superado las 2000 kcal recomendadas!!!", foreground="red")
             break
 
     
-
+# Definimos la funcion que verificara si el usuario se excedio o no
 def calcular_exceder(texto_calorias_aldia):
     global calorias_excedidas
     calorias_meta = (2000)
     calorias_excedidas = calorias_totales - calorias_meta
     if calorias_totales > calorias_meta:
-        texto_calorias_aldia.config(text= f"Te excediste por: {round(calorias_excedidas)} calorias de 2000 kcal.", foreground="red")
+        texto_calorias_aldia.config(text= f"Te excediste por: {round(calorias_excedidas)} calorias de 2000 kcal recomendadas", foreground="red")
     elif calorias_totales < calorias_meta:
-        texto_calorias_aldia.config(text= f"Te faltan {round(abs(calorias_excedidas))} calorias de 2000 kcal.", foreground="blue")
+        texto_calorias_aldia.config(text= f"Te faltan {round(abs(calorias_excedidas))} calorias de 2000 kcal recomendadas", foreground="blue")
     else:
-        texto_calorias_aldia.config(text= f"Perfecto! Llegaste a las {round(calorias_meta)} calorias de 2000 kcal.", foreground="green")
+        texto_calorias_aldia.config(text= f"Perfecto!! Llegaste a las {round(calorias_meta)} calorias de 2000 kcal recomendadas", foreground="green")
 
