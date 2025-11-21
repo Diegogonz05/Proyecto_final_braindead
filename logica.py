@@ -1,5 +1,9 @@
+#logica.py
+
 comidas_registradas = []
 calorias_totales = 0
+
+
 calorias_por_comida =  [
     {"alimento": "pupusa de queso", "calorias_100g": 230},
     {"alimento": "pupusa revuelta", "calorias_100g": 260},
@@ -256,69 +260,77 @@ calorias_por_comida =  [
     {"alimento": "pollo en caldo", "calorias_100g": 120},
     {"alimento": "frijoles parados", "calorias_100g": 130},
     {"alimento": "frijoles con crema", "calorias_100g": 175}
-    
 ]
+
+
 #Funcion conectada al boton ENTER, todo lo que ejecuta cuando se da click el boton
-def registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropdown_menu):
-    
+def obtener_nombres_comidas():
+    nombres_alimentos = []
+    for c in calorias_por_comida:
+        nombres_alimentos.append(c["alimento"])
+    return nombres_alimentos
+
+def registrar_comidas(combo_alimentos, texto_error, texto_calorias_resultado, entrada_gramos, historial):
     global calorias_totales
     
-    comida = caja_comidas.get().lower()
-    cantidades = dropdown_menu.get()
+    alimento = combo_alimentos.get().strip().lower() #Lista despegable
+    cantidades = entrada_gramos.get().strip()
     
-    if comida == "" or cantidades == "":
+
+    if alimento == "" or cantidades == "":
         texto_error.config(text= "Llena todos los campos", foreground = "red")
         return
     
-    if cantidades.isdigit():
-        texto_error.config(text= "")
-    else:
-        texto_error.config(text= "Digite un numero", foreground = "red")
-        return
-    #Se hace int aqui para compararlo con numeros enteros (hasta aca para
-    #evitar error al no recibir input)
-    cantidades = int(cantidades)
-    
-    #El bucle que ve cada diccionario dentro de la lista y corrobora si la comida
-    #pertenece a algun alimento de cada diccionario
-    existe_la_comida = False
-    for diccionario in calorias_por_comida:
-        if comida == diccionario["alimento"]:
-            texto_error.config(text= "")
-            existe_la_comida = True
-            if cantidades == 100:
-                calorias_totales += diccionario["calorias_100g"]
-            elif cantidades == 50:
-                calorias_totales += round((diccionario["calorias_100g"]/ 100) * 50, 2)
-            elif cantidades == 150:
-                calorias_totales += round((diccionario["calorias_100g"]/100) * 150, 2)
-            else:
-                texto_error.config(text= "Digite una cantidad (gramos) válida (50, 100, 150)", foreground = "red")
-                return
-    if existe_la_comida == False:
-        texto_error.config(text= f"La comida: {comida} no esta registrada", foreground = "red")
-        caja_comidas.delete(0,"end")
-        dropdown_menu.delete(0,"end")
-        return
-    
-    comidas_registradas.append(comida)
-    comidas_registradas.append(cantidades)
-    texto_error.config(text= f"Comida: {comida} registrada!", foreground= "green")
-    
-    print(comidas_registradas)
-    texto_calorias_resultado.config(text= str(calorias_totales))
-    
-    caja_comidas.delete(0,"end")
-    dropdown_menu.delete(0,"end")
 
-calorias_excedidas = 0
+    if cantidades.isdigit(): #Es un digito
+        gramos = int(cantidades)
+        texto_error.config(text="")
+    else:
+        texto_error.config(text= "Digite un numero valido para gramos", foreground = "red")
+        return
+    
+    
+
+
+    for diccionario in calorias_por_comida:
+        if alimento == diccionario["alimento"]:
+            calorias_a_sumar = round((diccionario["calorias_100g"] * gramos)/100 , 2)
+            calorias_totales += calorias_a_sumar
+
+
+
+
+            
+
+
+            comidas_registradas.append({
+                "alimento": alimento,
+                "gramos": gramos,
+                "calorias": calorias_a_sumar
+            }) #Para historial de pedidos
+
+
+
+            historial.insert("end", f"{alimento.capitalize()} - {gramos} g - {calorias_a_sumar} kcal")
+            
+            texto_calorias_resultado.config(text=calorias_totales)
+            texto_error.config(text=f"{alimento} registrado :D", foreground="green")
+
+            
+            if calorias_totales > 2000:
+                texto_error.config(text= "HAS SUPERO LAS 2000 kcal !!!", foreground="red")
+            break
+
+    
+
 def calcular_exceder(texto_calorias_aldia):
     global calorias_excedidas
     calorias_meta = (2000)
     calorias_excedidas = calorias_totales - calorias_meta
     if calorias_totales > calorias_meta:
-        texto_calorias_aldia.config(text= f"Te excediste por: {calorias_excedidas} calorias de (2000)", foreground="red")
+        texto_calorias_aldia.config(text= f"Te excediste por: {round(calorias_excedidas)} calorias de 2000 kcal.", foreground="red")
     elif calorias_totales < calorias_meta:
-        texto_calorias_aldia.config(text= f"Te faltan {abs(calorias_excedidas)} calorias de (2000)", foreground="blue")
+        texto_calorias_aldia.config(text= f"Te faltan {round(abs(calorias_excedidas))} calorias de 2000 kcal.", foreground="blue")
     else:
-        texto_calorias_aldia.config(text= f"Perfecto! Llegaste a las {calorias_meta} calorias de (2000)", foreground="green")
+        texto_calorias_aldia.config(text= f"Perfecto! Llegaste a las {round(calorias_meta)} calorias de 2000 kcal.", foreground="green")
+
