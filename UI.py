@@ -1,16 +1,14 @@
-#UI.py
-
 import tkinter
 from logica import registrar_comidas, obtener_nombres_comidas, calcular_exceder
 from tkinter import ttk
 
 
 def UI(ventana):
-    ventana.configure(background = "#282929") 
+    ventana.configure(background = "#1D1C1C") #esto es para establecer el primer fondo
 
 
-    #CREACION DE MENU DESPEGABLE
-    seleccion_alimento_label = tkinter.Label(
+    #creacion del menu desplegable
+    seleccion_alimento_label = tkinter.Label( #.Label es para indicarle al usuario que hacer
         ventana, 
         text="Selecciona el alimento:", 
         background="#282929", 
@@ -22,19 +20,20 @@ def UI(ventana):
             y=10
             )
     
+    #ttk combox es para la cracion de los menus desplegables
     combo_alimentos = ttk.Combobox(
         ventana,
         values=obtener_nombres_comidas(),
-        state="readonly",
+        state="readonly", #state = readondly sirve para no darle el chance al usuario a escribir y solo elegir
         width=30
         )
     combo_alimentos.place(
         x=20,
         y=40
-    ) #QUE ES STATE??? Evita que escribas en la lista despegable
+    ) 
 
 
-    #CREACION DE ENTRADA PARA GRAMOS (creo)
+    #donde el usuario escribira la cantidad de gramos
     entrada_gramos_label = tkinter.Label(
         ventana, 
         text="Cantidad (gramos):", 
@@ -110,7 +109,7 @@ def UI(ventana):
 
 
 
-    #HISTORIAL DE COMIDAS (LISTBOX: Le podes poner una lista)
+    #historial de las comidas 
 
     historial_comidas_label = tkinter.Label(
         ventana,
@@ -138,14 +137,15 @@ def UI(ventana):
 
 
 
-    #BOTONES
+    #botones
     boton_enter = tkinter.Button(
         ventana,
         text="Calcular",
         background="white",
         font=("Arial", 12),
         command=lambda: registrar_comidas(combo_alimentos, texto_error, texto_calorias_resultado, entrada_gramos, historial)
-    )
+    ) #command funciona para decirle al boton que hacer
+      #lambda funciona para que el comando se ejecute solamente si el boton es presionado   
     boton_enter.place(
         x=20,
         y=480
@@ -165,5 +165,3 @@ def UI(ventana):
         x=120,
         y=480
     )
-
-
