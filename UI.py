@@ -1,160 +1,169 @@
-from logica import registrar_comidas, calcular_exceder
+#UI.py
+
+import tkinter
+from logica import registrar_comidas, obtener_nombres_comidas, calcular_exceder
 from tkinter import ttk
 
+
 def UI(ventana):
-    import tkinter
+    ventana.configure(background = "#282929") 
+
+
+    #CREACION DE MENU DESPEGABLE
+    seleccion_alimento_label = tkinter.Label(
+        ventana, 
+        text="Selecciona el alimento:", 
+        background="#282929", 
+        foreground="white", 
+        font=("Arial", 12)
+        )
+    seleccion_alimento_label.place(
+            x=20, 
+            y=10
+            )
     
-    caja_comidas = tkinter.Entry(
+    combo_alimentos = ttk.Combobox(
         ventana,
-        width= 10,
-        font= ("Garamond", 20)
-    )
-    caja_comidas.place(
+        values=obtener_nombres_comidas(),
+        state="readonly",
+        width=30
+        )
+    combo_alimentos.place(
+        x=20,
+        y=40
+    ) #QUE ES STATE??? Evita que escribas en la lista despegable
+
+
+    #CREACION DE ENTRADA PARA GRAMOS (creo)
+    entrada_gramos_label = tkinter.Label(
+        ventana, 
+        text="Cantidad (gramos):", 
+        bg="#282929", 
+        fg="white", 
+        font=("Segoe UI", 12)
+        )
+    entrada_gramos_label.place(
+            x=20, 
+            y=80
+            )
     
-        x= 130,
-        y= 40
-    )
-    '''caja_cantidades = tkinter.Entry(
+    entrada_gramos = tkinter.Entry(
         ventana,
-        width=12,
-        font=("Segoe UI", 16)
-    )
-    caja_cantidades.place(
-    
-        x=130, 
-        y=108
-    )
-    '''
-    #LABELS
-    comida_label = tkinter.Label(
-        ventana,
-        font= ("Segoe ui", 14),
-        foreground= "white",
-        background= "#2d3f4d",
-        text= "Comida:"
-        
-    )
-    comida_label.place(
-        x = 40,
-        y = 42
-    )
-    cantidad_label = tkinter.Label(
-        ventana,
-        text="Cantidad:",
-        font=("Segoe UI", 14),
-        foreground="white",
-        background="#2d3f4d"
-    ) 
-    cantidad_label.place(
-        x=40, 
+        width=10
+        )
+    entrada_gramos.place(
+        x=20,
         y=110
-    
-        
     )
-    cantidad_gramos = tkinter.Label(
-        ventana,
-        text="(en gramos)",
-        font=("Segoe UI", 8 ),
-        foreground="white",
-        background="#2d3f4d"
-    )
-    cantidad_gramos.place(
-        
-        x=40, 
-        y=141.5
-    )
+
+
     texto_error = tkinter.Label(
         ventana,
-        text= "",
-        font= ("Garamond", 10),
-        foreground = "red",
-        background= "white"
-        
-
+        text="",
+        font=("Arial", 12),
+        foreground="red",
+        background="#282929"
     )
     texto_error.place(
-        x= 83,
-        y= 500
+        x=20,
+        y=145
     )
-    texto_calorias = tkinter.Label(
-        ventana,
-        text="Calorías:",
-        font=("Segoe UI", 14),
-        foreground="white",
-        background="#2d3f4d"
-        
-    )
-    texto_calorias.place(
-        
-        x=40, y=170
-        
-    )
+
+
+    #Mostrar calorias totales
+    calorias_label = tkinter.Label(
+        ventana, 
+        text="Calorías:", 
+        background="#282929", 
+        foreground="white", 
+        font=("Arial", 12)
+        )
+    calorias_label.place(x=20 , y=170)
+    
+
     texto_calorias_resultado = tkinter.Label(
-        
         ventana,
-        text= "",
-        font= ("Garamond", 15),
-        foreground = "black",
-        background= "white"
+        text="",
+        font= ("Arial", 12),
+        foreground="black",
+        background="white",
+        width=10
     )
     texto_calorias_resultado.place(
-        
-        x=130, 
-        y=172
-        
+        x=110,
+        y=170
     )
+
+
     texto_calorias_aldia = tkinter.Label(
-        ventana,
-        text= "",
-        font= ("Garamond", 10 ),
-        foreground = "black",
-        background= "white"
-    )
+        ventana, 
+        text="", 
+        font=("Arial", 12), 
+        foreground="black", 
+        background="#ffffff"
+        )
     texto_calorias_aldia.place(
-        
-        x=60, 
-        y=390
+        x=20,
+        y=210
     )
+
+
+
+
+    #HISTORIAL DE COMIDAS (LISTBOX: Le podes poner una lista)
+
+    historial_comidas_label = tkinter.Label(
+        ventana,
+        text="Historial de comidas:",
+        font=("Arial", 12),
+        background="#282929",
+        foreground="white"
+        )
+    historial_comidas_label.place(
+            x=20,
+            y=250
+        )
     
+
+
+    historial = tkinter.Listbox(
+        ventana,
+        width=55,
+        height=8
+    )
+    historial.place(
+        x=20,
+        y=280
+    )
+
+
+
     #BOTONES
     boton_enter = tkinter.Button(
         ventana,
-        background= "White",
-        font= ("Garamond", 14),
-        text= "Aceptar",
-        command= lambda: registrar_comidas(caja_comidas, texto_error, texto_calorias_resultado, dropdown_menu)
-    
-        )
-
-    boton_enter.place(
-    
-        x= 120,
-        y= 220
+        text="Calcular",
+        background="white",
+        font=("Arial", 12),
+        command=lambda: registrar_comidas(combo_alimentos, texto_error, texto_calorias_resultado, entrada_gramos, historial)
     )
-    #Boton que calcula si se pasó o no de las calorias del dia
+    boton_enter.place(
+        x=20,
+        y=480
+    )
+
+
+
+
     boton_exceder = tkinter.Button(
         ventana,
-        background= "White",
-        font= ("Garamond", 14),
-        text= "Calcular exceder",
-        command= lambda: calcular_exceder(texto_calorias_aldia)
+        text="Calcular el exceso",
+        background="white",
+        font=("Arial", 12),
+        command=lambda: calcular_exceder(texto_calorias_aldia)
     )
     boton_exceder.place(
-        
-        x= 120,
-        y= 330
+        x=120,
+        y=480
     )
-    #Boton_menu
-    dropdown_menu = ttk.Combobox(
-        ventana,
-        values= ("50", "100", "150"),
-        width=12,
-        font=("Segoe UI", 16)
 
-    )
-    dropdown_menu.place(
-        x=130, 
-        y=108
-    
-    )
-    
+
